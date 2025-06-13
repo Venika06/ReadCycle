@@ -1,5 +1,3 @@
-# File: pages/Profile.py
-
 import streamlit as st
 
 st.set_page_config(page_title="📄 Profile", layout="centered")
@@ -7,57 +5,40 @@ st.set_page_config(page_title="📄 Profile", layout="centered")
 st.markdown("<h1 style='text-align: center;'>👤 User Profile</h1>", unsafe_allow_html=True)
 st.markdown("<h6 style='text-align: center;'>Please fill out your profile details below:</h6>", unsafe_allow_html=True)
 
-st.markdown("######")
-# Basic Info
-st.markdown("<h4 style='text-align: left;'>📋 Basic Information</h4>", unsafe_allow_html=True)
-#st.subheader("📋 Basic Information")
-name = st.text_input("Full Name")
-phone = st.text_input("Phone Number (Indian)", max_chars=10)
+# --- INPUTS ---
+name = st.text_input("Full Name", value=st.session_state.get("profile_name", ""))
+phone = st.text_input("Phone Number (Indian)", max_chars=10, value=st.session_state.get("profile_phone", ""))
 
-# Address Section
-st.markdown("<h4 style='text-align: left;'>🏠 Address Information</h4>", unsafe_allow_html=True)
-#st.subheader("🏠 Address Information")
-door_no = st.text_input("Door No.")
-area = st.text_input("Area / Street")
-landmark = st.text_input("Landmark")
-city = st.text_input("City / Village")
-mandal = st.text_input("Mandal")
-district = st.text_input("District")
-state = st.text_input("State")
+door_no = st.text_input("Door No.", value=st.session_state.get("profile_door_no", ""))
+area = st.text_input("Area / Street", value=st.session_state.get("profile_area", ""))
+landmark = st.text_input("Landmark", value=st.session_state.get("profile_landmark", ""))
+city = st.text_input("City / Village", value=st.session_state.get("profile_city", ""))
+mandal = st.text_input("Mandal", value=st.session_state.get("profile_mandal", ""))
+district = st.text_input("District", value=st.session_state.get("profile_district", ""))
+state = st.text_input("State", value=st.session_state.get("profile_state", ""))
 
-# Additional Details
-st.markdown("<h4 style='text-align: left;'>📝 Additional Info</h4>", unsafe_allow_html=True)
-#st.subheader("📝 Additional Info")
-bio = st.text_area("Bio (optional)", help="A short description about yourself", height=100)
-fav_book = st.text_input("Favorite Book")
-fav_author = st.text_input("Favorite Author")
-fav_genre = st.text_input("Favorite Genre")
-others = st.text_area("Other Notes / Preferences")
+bio = st.text_area("Bio (optional)", help="A short description about yourself", height=100, value=st.session_state.get("profile_bio", ""))
+fav_book = st.text_input("Favorite Book", value=st.session_state.get("profile_fav_book", ""))
+fav_author = st.text_input("Favorite Author", value=st.session_state.get("profile_fav_author", ""))
+fav_genre = st.text_input("Favorite Genre", value=st.session_state.get("profile_fav_genre", ""))
+others = st.text_area("Other Notes / Preferences", value=st.session_state.get("profile_others", ""))
 
-st.markdown(
-    """
-    <style>
-    .stButton {
-        text-align: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Submit Button
 if st.button("💾 Save Profile"):
     if name and phone and door_no and city and district and state:
+        st.session_state["profile_name"] = name
+        st.session_state["profile_phone"] = phone
+        st.session_state["profile_door_no"] = door_no
+        st.session_state["profile_area"] = area
+        st.session_state["profile_landmark"] = landmark
+        st.session_state["profile_city"] = city
+        st.session_state["profile_mandal"] = mandal
+        st.session_state["profile_district"] = district
+        st.session_state["profile_state"] = state
+        st.session_state["profile_bio"] = bio
+        st.session_state["profile_fav_book"] = fav_book
+        st.session_state["profile_fav_author"] = fav_author
+        st.session_state["profile_fav_genre"] = fav_genre
+        st.session_state["profile_others"] = others
         st.success("✅ Profile saved successfully!")
-        st.markdown("#### 📋 Summary")
-        st.write(f"**Name:** {name}")
-        st.write(f"**Phone:** {phone}")
-        st.write(f"**Address:** {door_no}, {area}, {landmark}, {city}, {mandal}, {district}, {state}")
-        if bio:
-            st.write(f"**Bio:** {bio}")
-        st.write(f"**Favorite Book:** {fav_book}")
-        st.write(f"**Favorite Author:** {fav_author}")
-        st.write(f"**Genre:** {fav_genre}")
-        st.write(f"**Other:** {others}")
     else:
-        st.error("⚠️ Please fill in all the required fields: name, phone, door no, city, district, and state.")
+        st.error("⚠️ Please fill in all required fields: name, phone, door no, city, district, and state.")
